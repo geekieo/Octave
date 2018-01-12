@@ -27,7 +27,7 @@ sigma = zeros(1, size(X, 2));
 %       
 mu = mean(X, axis = 1);
 sigma = std(X, axis = 1);
-X_norm = (X - mu)./sigma
+X_norm = (X - mu)./sigma;
 
 
 

@@ -14,7 +14,7 @@ J = 0;
 %               You should set J to the cost.
   
 %J = sum((X*theta-y).^2)/2/m % sum 函数求和
-delta = X*theta-y
+delta = X*theta-y;
 J = delta' * delta / 2 / m;	% 矩阵运算式求和
 
 

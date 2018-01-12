@@ -12,7 +12,7 @@ J = 0;
 % ====================== YOUR CODE HERE ======================
 % Instructions: Compute the cost of a particular choice of theta
 %               You should set J to the cost.
-delta = X*theta-y
+delta = X*theta-y;
 J = delta' * delta / 2 / m;
 
 

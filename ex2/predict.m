@@ -14,12 +14,12 @@ p = zeros(m, 1);
 %               your learned logistic regression parameters. 
 %               You should set p to a vector of 0's and 1's
 %
-h = sigmoid(X * theta)  % h 的维度为 (m,1)
+h = sigmoid(X * theta);  % h 的维度为 (m,1)
 for i = 1 : 1 : m
 	if h(i) >= 0.5
-		p(i) = 1
+		p(i) = 1;
 	else
-		p(i) = 0
+		p(i) = 0;
 end
 
 

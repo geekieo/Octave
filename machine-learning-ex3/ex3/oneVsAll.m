@@ -49,14 +49,15 @@ X = [ones(m, 1) X];
 %                 initial_theta, options);
 %
 
-
-
-
-
-
-
-
-
+initial_theta = zeros(n + 1, 1);
+options = optimset('GradObj', 'on', 'MaxIter', 50);
+% num_labels 为类别数，逻辑回归训练器的个数，minst数据集中为10
+% 无隐层，每类以二分类训练，分别以 1,2,3,...,0 为正例
+% y==c 为 1，y!=1 为 0
+% size(all_theta) = (10,401)
+for c = 1:1:num_labels 
+	all_theta(c, :) = fmincg(@(t)(lrCostFunction(t, X, (y == c),lambda)), initial_theta,options );
+end
 
 
 

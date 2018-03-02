@@ -92,13 +92,14 @@ for k = 1:m
     Theta2_grad += delta3(k,:)' * a2(k,:); % Theta2_grad size = 10*26
 end
 Theta2_grad *= 1/m;
-
+Theta2_grad(:,2:end) += lambda/m * Theta2(:, 2:end); % 隐层除 bias 节点到输出层的参数，其余都加正则
 
 % Theta1_grad 同理, 但是隐层存在 bias 节点，其误差不计入BP
 for k = 1:m
     Theta1_grad += delta2(k,2:end)' * a1(k,:);  % Theta1_grad size = 25*401
 end
 Theta1_grad *= 1/m;
+Theta1_grad(:,2:end) += lambda/m * Theta1(:, 2:end);
 
 
 % -------------------------------------------------------------

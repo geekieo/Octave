@@ -62,29 +62,43 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% ========== feed forward ==========
 % 注意 bias 项位置保持一致，本项目中 bias 项全部位于首列，而非尾列
-a1 = [ones(m,1),X];     % L1 增加 bias 项
-z2 = a1 * Theta1';
+a1 = [ones(m,1),X];     % L1 增加 bias 项, a1 size = 5000*401
+z2 = a1 * Theta1';      % z2 size = 5000*25; Theta1 size = 25*401
 a2 = sigmoid(z2);
-a2 = [ones(m,1),a2];    % L2 增加 bias 项
-z3 = a2 * Theta2';
-a3 = sigmoid(z3);       % h(x)
+a2 = [ones(m,1),a2];    % L2 增加 bias 项,  a2 size = 5000*26
+z3 = a2 * Theta2';      % z3 size = 5000*26; Theta2 size = 10*26
+a3 = sigmoid(z3);       % h(x) size = 5000*10
 
 % 独热编码
-y_label = zeros(m, num_labels);
+y_label = zeros(m, num_labels); % size = 5000*10
 for i = 1:1:m
     y_label(i,y(i))=1;  % y的取值范围是[1，10]，直接可以当作下标
 end
 
-delta = -y_label.*log(a3)-(1-y_label).*log(1-a3);
-J=1/m* sum(sum(delta));
-
+Cost = -y_label.*log(a3)-(1-y_label).*log(1-a3);
+J=1/m* sum(sum(Cost));
 % Theta1 和 Theta2 第一列都是 bias 的权重向量，不计入正则项
 r = lambda / (2 * m) * (sum(sum(Theta1(:, 2:end) .^ 2))+ sum(sum(Theta2(:, 2:end) .^ 2)));
 J = J + r; 
 
+% ========== back propagation ==========
+delta3 = a3 -y_label;    % size = 5000 * 10
+delta2 = (Theta2' * delta3' .* sigmoidGradient([ones(m,1),z2])')'; % size = 5000 * 26,含 bias 项
+
+% 按样本遍历，累加求平均。输出层无 bias 项，全部节点计入BP。
+for k = 1:m
+    Theta2_grad += delta3(k,:)' * a2(k,:); % Theta2_grad size = 10*26
+end
+Theta2_grad *= 1/m;
 
 
+% Theta1_grad 同理, 但是隐层存在 bias 节点，其误差不计入BP
+for k = 1:m
+    Theta1_grad += delta2(k,2:end)' * a1(k,:);  % Theta1_grad size = 25*401
+end
+Theta1_grad *= 1/m;
 
 
 % -------------------------------------------------------------

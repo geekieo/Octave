@@ -18,8 +18,9 @@ W = zeros(L_out, 1 + L_in);
 %
 % Note: The first column of W corresponds to the parameters for the bias unit
 %
-
-
+% 随机生成权重，区间[0,1]，缩放平移到[-epsilon_init,epsilon_init]
+epsilon_init = 0.12;
+W = rand(L_out,1 + L_in) * 2 * epsilon_init - epsilon_init;
 
 
 

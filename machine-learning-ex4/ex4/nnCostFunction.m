@@ -62,19 +62,26 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% 注意 bias 项位置保持一致，本项目中 bias 项全部位于首列，而非尾列
+a1 = [ones(m,1),X];     % L1 增加 bias 项
+z2 = a1 * Theta1';
+a2 = sigmoid(z2);
+a2 = [ones(m,1),a2];    % L2 增加 bias 项
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);       % h(x)
 
+% 独热编码
+y_label = zeros(m, num_labels);
+for i = 1:1:m
+    y_label(i,y(i))=1;  % y的取值范围是[1，10]，直接可以当作下标
+end
 
+delta = -y_label.*log(a3)-(1-y_label).*log(1-a3);
+J=1/m* sum(sum(delta));
 
-
-
-
-
-
-
-
-
-
-
+% Theta1 和 Theta2 第一列都是 bias 的权重向量，不计入正则项
+r = lambda / (2 * m) * (sum(sum(Theta1(:, 2:end) .^ 2))+ sum(sum(Theta2(:, 2:end) .^ 2)));
+J = J + r; 
 
 
 

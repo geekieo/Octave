@@ -18,18 +18,12 @@ grad = zeros(size(theta));
 %
 %               You should set J to the cost and grad to the gradient.
 %
-X_train = [ones(m,1), X];
-J = 1/(2*m) * sum((theta'*X - y)^2 )+ lambda / (2*m) * (theta' * theta)
 
+% note: X 第一列含bias项，即加了1
+J = 1/(2*m) * sum((X*theta - y).^2 )+ lambda / (2*m) * sum(theta(2:end,:).* theta(2:end,:));   % X 已包含bias项，theta 不算 theta0
 
-
-
-
-
-
-
-
-
+grad = 1/m * (X * theta - y)' * X;
+grad(2:end) += lambda/m * theta'(2:end);
 
 % =========================================================================
 

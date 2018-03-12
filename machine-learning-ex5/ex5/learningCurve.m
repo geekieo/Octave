@@ -14,8 +14,10 @@ function [error_train, error_val] = ...
 %   datasets, you might want to do this in larger intervals.
 %
 
-% Number of training examples
-m = size(X, 1);
+% Number of examples
+m_train = size(X, 1);
+m_val = size(Xval, 1);
+m = min(m_train,m_val);
 
 % You need to return these values correctly
 error_train = zeros(m, 1);
@@ -52,10 +54,13 @@ error_val   = zeros(m, 1);
 %
 
 % ---------------------- Sample Solution ----------------------
-
-
-
-
+% 为保证画出来的两条曲线相互对照，m 取训练集和验证集中较小的数量
+% 遍历 m, 每次取前 i 个样本计算 theta 和error
+for i = 1:m
+    [theta] = trainLinearReg(X(1:i,:), y(1:i), lambda);
+    error_train(i) = 1/(2*i) * sum(X(1:i,:) * theta - y(1:i));
+    error_val(i) = 1/(2*i) * sum(Xval(1:i,:) * theta -yval(1:i));
+end
 
 
 
